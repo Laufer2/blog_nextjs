@@ -1,5 +1,7 @@
-import firebase, { getApps, getApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getApps, getApp } from "firebase/app";
+import * as firebase from "firebase/app";
+
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -19,7 +21,11 @@ if (getApps().length === 0) {
 
 const app = getApp();
 const auth = getAuth(app);
+
+// which provider to use when signing in
+const googleAuthProvider = new GoogleAuthProvider();
+
 const firestore = getFirestore(app);
 const storage = getStorage(app);
 
-export { auth, storage, firestore };
+export { auth, storage, firestore, googleAuthProvider };
