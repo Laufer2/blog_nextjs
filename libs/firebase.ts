@@ -2,8 +2,18 @@ import { getApps, getApp } from "firebase/app";
 import * as firebase from "firebase/app";
 
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+  limit,
+  DocumentSnapshot,
+  Timestamp,
+} from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { toast } from "react-hot-toast";
 
 const firebaseConfig = {
   apiKey: "AIzaSyChOlavCi8WFf0Cu_q5UT2dsWHIP7A_8_A",
@@ -28,4 +38,45 @@ const googleAuthProvider = new GoogleAuthProvider();
 const firestore = getFirestore(app);
 const storage = getStorage(app);
 
-export { auth, storage, firestore, googleAuthProvider };
+const fromMillis = Timestamp.fromMillis;
+
+/**`
+ * Gets a users/{uid} document with username
+ * @param  {string} username
+ */
+async function getUserWithUsername(username: string) {
+  const usersRef = collection(firestore, "users");
+  const q = query(usersRef, where("username", "==", username), limit(1));
+  try {
+    const querySnapshot = await getDocs(q);
+    const userDoc = querySnapshot.docs[0];
+    return userDoc;
+  } catch (e) {
+    toast.error("Could not find user.");
+    return null;
+  }
+}
+
+/**`
+ * Converts a firestore document to JSON
+ * @param  {DocumentSnapshot} doc
+ */
+function postToJSON(doc: DocumentSnapshot) {
+  const data = doc.data();
+  return {
+    ...data,
+    // Gotcha! firestore timestamp NOT serializable to JSON. Must convert to milliseconds
+    createdAt: data!.createdAt.toMillis(),
+    updatedAt: data!.updatedAt.toMillis(),
+  };
+}
+
+export {
+  auth,
+  storage,
+  firestore,
+  googleAuthProvider,
+  fromMillis,
+  postToJSON,
+  getUserWithUsername,
+};

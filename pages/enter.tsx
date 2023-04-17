@@ -83,7 +83,7 @@ function UsernameForm(): JSX.Element {
     }
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     // Force form value typed in form to match correct format
     const val = e.target.value.toLowerCase();
     const re = /^(?=[a-zA-Z0-9._]{3,15}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
