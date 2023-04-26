@@ -28,6 +28,13 @@ export async function getServerSideProps({
   let user: DocumentData | undefined | null = null;
   let posts: DocumentData[] | null = null;
 
+  //no user = render 404 page
+  if (!userDoc?.exists()) {
+    return {
+      notFound: true,
+    };
+  }
+
   // if user exists, return user posts
   if (userDoc) {
     user = userDoc.data();
@@ -58,7 +65,7 @@ interface UserData {
   posts: DocumentData[] | null | undefined;
 }
 
-export default function UserProfilePage({ user, posts }: UserData) {
+export default function UserProfilePage({ user, posts }: UserData | any) {
   return (
     <main>
       <UserProfile user={user} />

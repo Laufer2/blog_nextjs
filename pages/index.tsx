@@ -51,10 +51,6 @@ export default function Home(props: Props) {
 
   const [postsEnd, setPostsEnd] = useState(false);
 
-  useEffect(() => {
-    console.log("posts", posts);
-  });
-
   const getMorePosts = async () => {
     setLoading(true);
     const last = posts[posts.length - 1];
@@ -64,8 +60,6 @@ export default function Home(props: Props) {
       typeof last.createdAt === "number"
         ? fromMillis(last.createdAt)
         : last.createdAt;
-
-    console.log(cursor);
 
     const postsQuery = query(
       collectionGroup(firestore, "posts"),
@@ -79,7 +73,6 @@ export default function Home(props: Props) {
     try {
       const querySnapshot = await getDocs(postsQuery);
       newPosts = querySnapshot.docs.map((doc) => doc.data());
-      console.log("newpost", newPosts);
     } catch (err) {
       console.log(err);
       toast.error("Could not fetch posts.");
