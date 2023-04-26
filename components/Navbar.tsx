@@ -20,7 +20,6 @@ export default function Navbar() {
                 <button className="btn-blue">Write Posts</button>
               </Link>
             </li>
-
             <li>
               <Link href={`/${username}`}>
                 {/* <img src={user?.photoURL} alt="user photo" /> */}

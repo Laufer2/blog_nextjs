@@ -52,7 +52,7 @@ async function getUserWithUsername(username: string) {
     const userDoc = querySnapshot.docs[0];
     return userDoc;
   } catch (e) {
-    toast.error("Could not find user.");
+    toast.error("Could not find the user.");
     return null;
   }
 }
@@ -65,7 +65,7 @@ function postToJSON(doc: DocumentSnapshot) {
   const data = doc.data();
   return {
     ...data,
-    // Gotcha! firestore timestamp NOT serializable to JSON. Must convert to milliseconds
+    //firestore timestamp NOT serializable to JSON. Must convert to milliseconds
     createdAt: data!.createdAt.toMillis(),
     updatedAt: data!.updatedAt.toMillis(),
   };
